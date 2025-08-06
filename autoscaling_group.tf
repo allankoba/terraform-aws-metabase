@@ -8,6 +8,23 @@ resource "aws_launch_template" "ecs_launch_template" {
   iam_instance_profile {
     name = aws_iam_instance_profile.ecs_instance_role_profile.name
   }
+
+  metadata_options {
+    http_tokens   = "required"   # Enforces IMDSv2
+    http_endpoint = "enabled"
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = merge(
+      {
+        Name = "metabase-${var.environment}-instance"
+      },
+      var.default_tags,
+      var.tags,
+    )
+  }
 }
 
 resource "aws_autoscaling_group" "ecs_asg" {
@@ -22,6 +39,12 @@ resource "aws_autoscaling_group" "ecs_asg" {
   launch_template {
     id      = aws_launch_template.ecs_launch_template.id
     version = aws_launch_template.ecs_launch_template.latest_version
+  }
+
+  tag {
+    key                 = "Name"
+    value               = "metabase-${var.environment}-instance"
+    propagate_at_launch = true
   }
 
   dynamic "tag" {
