@@ -10,6 +10,7 @@ resource "aws_ecs_task_definition" "task_definition" {
       "image" : "metabase/metabase"
       "essential" : true
       "memoryReservation" : var.ecs_task_memory
+      "readonlyRootFilesystem": true
       "cpu" : var.ecs_task_cpu
 
       "logConfiguration" : {
