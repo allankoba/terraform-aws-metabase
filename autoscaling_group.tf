@@ -29,7 +29,7 @@ resource "aws_launch_template" "ecs_launch_template" {
 
 resource "aws_autoscaling_group" "ecs_asg" {
   name                      = "metabase-${var.environment}-autoscaling-group"
-  vpc_zone_identifier       = var.private_subnet_ids
+  vpc_zone_identifier       = var.private_subnet_ids[0]
   min_size                  = 1
   max_size                  = var.desired_capacity
   desired_capacity          = var.desired_capacity
