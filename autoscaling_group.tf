@@ -1,6 +1,6 @@
 resource "aws_launch_template" "ecs_launch_template" {
   name                   = "metabase-${var.environment}-asg-launch-template"
-  image_id               = var.ami_id == "" ? data.aws_ami.amazon_linux_2023_ecs.id : var.ami_id
+  image_id               = var.ami_id == "" ? data.aws_ami.amazon_linux_2.id : var.ami_id
   vpc_security_group_ids = [aws_security_group.metabase_ecs_sg.id]
   user_data              = base64encode("#!/bin/bash\necho ECS_CLUSTER=${aws_ecs_cluster.cluster.name} >> /etc/ecs/ecs.config")
   instance_type          = var.instance_type
