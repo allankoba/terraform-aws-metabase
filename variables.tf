@@ -77,6 +77,12 @@ variable "db_instance_type" {
   description = "EC2 instance type for the backend RDS database"
 }
 
+variable "ami_id" {
+  type        = string
+  default     = ""
+  description = "Custom AMI ID for the Metabase EC2 instances. If not provided, the latest Amazon Linux 2 ECS-optimized AMI will be used."
+}
+
 variable "metabase_db_credentials_secret_name" {
   type        = string
   description = "Secrets Manager secret ARN that stores the Metabase backend database master password"
