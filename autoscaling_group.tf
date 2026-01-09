@@ -52,7 +52,7 @@ resource "aws_autoscaling_group" "ecs_asg" {
     }
 
     # Crucial: this triggers refresh automatically on launch template change
-    triggers = ["launch_template"]
+    # triggers = ["launch_template"]
   }
 
   tag {
