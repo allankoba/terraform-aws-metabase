@@ -41,6 +41,20 @@ resource "aws_autoscaling_group" "ecs_asg" {
     version = aws_launch_template.ecs_launch_template.latest_version
   }
 
+  instance_refresh {
+    strategy = "Rolling"
+
+    preferences {
+      instance_warmup        = 300          # seconds to wait after launch before health checks
+      min_healthy_percentage = 90           # keep at least 90% healthy during refresh
+      # max_healthy_percentage   = 110      # optional
+      # skip_matching            = false    # optional: replace even if config matches
+    }
+
+    # Crucial: this triggers refresh automatically on launch template change
+    triggers = ["launch_template"]
+  }
+
   tag {
     key                 = "Name"
     value               = "metabase-${var.environment}-instance"
